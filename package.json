@@ -38,6 +38,8 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-1": "^6.16.0",
     "body-parser": "^1.16.0",
+    "bcrypt": "^1.0.2",
+    "bluebird": "^3.4.6",
     "express": "^4.14.0",
     "mongodb": "^2.2.24",
     "mongoose": "^4.8.2",
