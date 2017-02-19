@@ -81,7 +81,7 @@ module.exports = (app, express, rootPath) => {
         } else if (count.nModified === 0 && count.n === 0) {
           res.status(217).send(`Can't find user( ${req.body.newAdmin} ) in the database`);
         } else if (count.nModified === 0 && count.n === 1) {
-          res.status(200).send(`User ${req.body.newAdmin} was an Admin.`);
+          res.status(220).send(`User ${req.body.newAdmin} was an Admin.`);
         }
       }
     });

@@ -106,6 +106,80 @@ describe('Login & Signup API', () => {
 	});
 });
 
+describe('add admin API', () => {
+	const newUser = {
+		username: 'bruce',
+		password: 'Gx1234',
+		isAdmin: false
+	};
+
+	const newUser2 = {
+		username: 'reese',
+		password: 'Gx1234',
+		isAdmin: true
+	};
+
+	beforeEach((done) => {
+		User.remove({username: 'bruce'}).exec();
+		User.remove({username: 'reese'}).exec();
+		done();
+	});
+
+	it('call addadmin api will set a user\'s isAdmin indicator to be true', (done) => {
+		(new User(newUser)).save((err, result) => {
+			request(app)
+				.post('/api/addadmin')
+				.send({newAdmin: 'bruce'})
+				.end((err, res) => {
+					User.find({username: 'bruce'}).exec((err, user) => {
+						expect(user.length).to.equal(1);
+						expect(user[0].username).to.equal('bruce');
+						expect(user[0].isAdmin).to.be.true;
+						done(); 
+					});
+				})
+		});
+	});
+
+	it('should return 200 statusCode when successfully added a regular user as an admin', (done) => {
+		(new User(newUser)).save((err, result) => {
+			request(app)
+				.post('/api/addadmin')
+				.send({newAdmin: 'bruce'})
+				.end((err, res) => {
+					expect(res.statusCode).to.equal(200);
+					expect(res.text).to.equal('Successfully add bruce as Admin.')
+					done();
+				})
+		});
+	});
+
+	it('should return 220 statusCode and warning text when the user trying to add is already an admin', (done) => {
+		(new User(newUser2)).save((err, result) => {
+			request(app)
+				.post('/api/addadmin')
+				.send({newAdmin: 'reese'})
+				.end((err, res) => {
+					expect(res.statusCode).to.equal(220);
+					expect(res.text).to.equal('User reese was an Admin.')
+					done();
+				})
+		});
+	});
+
+	it('should return 217 statusCode and warning text when the user requested doesn\'t exist', (done) => {
+		request(app)
+			.post('/api/addadmin')
+			.send({newAdmin: 'reese'})
+			.end((err, res) => {
+				expect(res.statusCode).to.equal(217);
+				expect(res.text).to.equal('Can\'t find user( reese ) in the database')
+				done();
+			})
+	});
+
+});
+
 describe('Expense Rated API: create and fetch', () => {
 	beforeEach((done) => {
 		Expense.remove({user: 'reese'}).exec();
