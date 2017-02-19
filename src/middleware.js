@@ -32,6 +32,19 @@ export function customedMiddleware(store) {
 				})
 				.catch(error => console.log(error));
 		}
+
+		if (action.type === 'SAVEEXPENSE') {
+			axios.post('/api/saveexpense', {
+				username: action.username,
+				datetime: action.datetime,
+				cost: action.cost,
+				description: action.description
+			})
+				.then(res => {
+				})
+				.catch(error => console.log(error));
+		}
+
 		return next(action);
 	};
 }

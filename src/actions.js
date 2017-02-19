@@ -14,6 +14,12 @@ export function login(username, password) {
 	}
 }
 
+export function logout() {
+	return {
+		type: 'LOGOUT'
+	}
+}
+
 export function switchToLogin() {
 	return {
 		type: 'SWITCHTOLOGIN'
@@ -38,5 +44,27 @@ export function authFail(text) {
 	return {
 		type: 'AUTHFAIL',
 		errorMessage: text
+	}
+}
+
+export function showCreatePanel() {
+	return {
+		type: 'SHOWCREATEPANEL'
+	}
+}
+
+export function hideCreatePanel() {
+	return {
+		type: 'HIDECREATEPANEL'
+	}
+}
+
+export function saveExpense(username, datetime, cost, description) {
+	return {
+		type: 'SAVEEXPENSE',
+		username: username,
+		datetime: datetime,
+		cost: cost,
+		description: description
 	}
 }

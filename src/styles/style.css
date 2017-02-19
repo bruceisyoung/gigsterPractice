@@ -37,3 +37,69 @@ div.authContainer {
 .errorMessage {
 	font-size: 16px;
 }
+div.banner {
+	height: 50px;
+	width: 96%;
+	margin: 10px 2%;
+}
+
+.banner button {
+	vertical-align: middle;
+	margin: 1px 2px 0px;
+}
+
+.banner button {
+	padding: 5px 20px;
+	font-size: 16px;
+	border-radius: 3px;
+}
+
+button.textButton {
+	border: none;
+	background-color: white;
+}
+
+div .topRight {
+	float: right;
+}
+
+div .topLeft {
+	float: left;
+}
+
+div.createContainer {
+	text-align: center;
+	position: relative;
+	margin: 10px auto;
+	width: 400px;
+}
+
+div.createContainer table {
+	margin: 1px auto;
+}
+
+.expenseForm {
+	text-align: center;
+	margin: 5px auto;
+	height: 200px;
+	width: 360px;
+}
+.expenseForm input {	
+	display: block;
+	margin: auto;
+	margin-top: 2px;
+	font-size: 20px;
+	text-align: center;
+}
+
+.expenseForm button {
+	display: inline-block;
+	text-align: center;
+	font-size: 16px;
+	padding: 5px 25px;
+	margin: auto;
+	margin-top: 5px;
+	background-color: white;
+	border: 1px solid grey;
+	border-radius: 3px;
+}

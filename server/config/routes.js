@@ -68,6 +68,19 @@ module.exports = (app, express, rootPath) => {
   });
 
   app.post('/api/saveexpense', (req, res) => {
+    let newExpense = new Expense({
+      datetime: req.body.datetime,
+      amount: req.body.cost,
+      description: req.body.description,
+      user: req.body.username
+    });
+    newExpense.save((err, savedExpense) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.status(200).send('New expense has been successfully saved');
+      }
+    });
   });
 
   app.post('/api/deleteexpense', (req, res) => {

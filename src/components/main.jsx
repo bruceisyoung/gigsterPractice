@@ -1,11 +1,24 @@
 import React, { Component} from 'react';
+import { connect } from 'react-redux';
 
-export default class Main extends Component {
+import TopBanner from './topBanner';
+import CreatePanel from './createPanel';
+
+class Main extends Component {
   render() {
   	return (
       <div>
-        <div>main page</div>
+        <TopBanner />
+        <div> { this.props.createDisplay ? <CreatePanel /> : <div></div> } </div>
       </div>
   	);
   }
 }
+
+let mapStateToProps = (state) => {
+	return {
+		createDisplay: state.createDisplay
+	};
+}
+
+export default connect(mapStateToProps)(Main);
