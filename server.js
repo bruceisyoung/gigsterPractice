@@ -4,6 +4,7 @@ let mongoose = require('mongoose');
 let bodyParser = require('body-parser');
 
 let router = require('./server/config/routes');
+let helpers = require('./server/config/helpers');
 let app = express();
 
 app.use( bodyParser.json() );
@@ -20,11 +21,8 @@ db.once('open', () => {
   console.log('Mongoose connection is on ');
 });
 
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'index.html'));
-});
-
 router(app, express, __dirname);
+helpers.registerAdmin(process.env.ADMIN || 'admin', process.env.PASSWORD || 'Gx1234');
 
 let port = process.env.PORT || 8080;
 
