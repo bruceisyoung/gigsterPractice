@@ -20,6 +20,13 @@ export function logout() {
 	}
 }
 
+export function addAdmin(newAdmin) {
+	return {
+		type: 'ADDADMIN',
+		newAdmin: newAdmin
+	}
+}
+
 export function switchToLogin() {
 	return {
 		type: 'SWITCHTOLOGIN'
@@ -137,5 +144,17 @@ export function checkOutdatedErrorMessage() {
 	return {
 		type: 'CHECKOUTDATEDERRORMESSAGE',
 		time: Date.now()
+	}
+}
+
+export function showAddAdminPanel() {
+	return {
+		type: 'SHOWADDADMINPANEL'
+	}
+}
+
+export function hideAddAdminPanel() {
+	return {
+		type: 'HIDEADDADMINPANEL'
 	}
 }

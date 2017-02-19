@@ -3,6 +3,7 @@ import isAuthReducer from './reducer_isAuth';
 import authMessageReducer from './reducer_authMessage';
 import showLoginReducer from './reducer_showLogin';
 import userInfoReducer from './reducer_userInfo';
+import addAdminDisplayReducer from './reducer_addAdminDisplay';
 import createDisplayReducer from './reducer_createDisplay';
 import expenseDatabaseReducer from './reducer_expenseDatabase';
 import modalReducer from './reducer_modal';
@@ -13,6 +14,7 @@ const rootReducer = combineReducers({
 	authMessage: authMessageReducer,
 	showLogin: showLoginReducer,
 	userInfo: userInfoReducer,
+	addAdminDisplay: addAdminDisplayReducer,
 	createDisplay: createDisplayReducer,
 	expenseDatabase: expenseDatabaseReducer,
 	modal: modalReducer,

@@ -69,6 +69,22 @@ module.exports = (app, express, rootPath) => {
   })
 
   app.post('/api/addadmin', (req, res) =>{
+    User.update({username: req.body.newAdmin}, {
+      isAdmin: true
+    }, (err, count) => {
+      if (err) {
+        console.log(err);
+        res.status(509).send('Internal Database Error');
+      } else {
+        if (count.nModified === 1) {
+          res.status(200).send(`Successfully add ${req.body.newAdmin} as Admin.`);
+        } else if (count.nModified === 0 && count.n === 0) {
+          res.status(217).send(`Can't find user( ${req.body.newAdmin} ) in the database`);
+        } else if (count.nModified === 0 && count.n === 1) {
+          res.status(200).send(`User ${req.body.newAdmin} was an Admin.`);
+        }
+      }
+    });
   });
 
   app.post('/api/saveexpense', (req, res) => {

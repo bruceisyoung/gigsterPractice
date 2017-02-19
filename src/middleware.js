@@ -106,6 +106,16 @@ export function customedMiddleware(store) {
 			}, 3000)
 		}
 
+		if (action.type === 'ADDADMIN') {
+			axios.post('/api/addadmin', {
+				newAdmin: action.newAdmin
+			})
+				.then(res => {
+					store.dispatch(actions.showErrorMessage(res.data));
+				})
+				.catch(error => console.log(error));
+		}
+
 		return next(action);
 	};
 }

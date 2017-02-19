@@ -2,13 +2,23 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { logout, showCreatePanel, hideCreatePanel, fetchExpense, fetchAllExpense, showErrorMessage } from '../actions';
+import { logout, showAddAdminPanel, hideAddAdminPanel, showCreatePanel, hideCreatePanel, fetchExpense, fetchAllExpense, showErrorMessage } from '../actions';
 
 class TopBanner extends Component {
+  toggleAddAdminPanel() {
+    if (this.props.addAdminDisplay) {
+      this.props.hideAddAdminPanel();
+    } else {
+      this.props.hideCreatePanel();
+      this.props.showAddAdminPanel();
+    }
+  }
+
   toggleCreatePanel() {
     if (this.props.createDisplay) {
       this.props.hideCreatePanel();
     } else {
+      this.props.hideAddAdminPanel();
       this.props.showCreatePanel();
     }
   }
@@ -34,6 +44,7 @@ class TopBanner extends Component {
         <button className='topLeft' onClick={ this.toggleCreatePanel.bind(this) }>{ this.props.createDisplay ? 'Hide' : 'Creat Expense' }</button>
         <button className='topLeft' onClick={ this.fetchExpense.bind(this) }>Show Expense</button>
         <button className='topLeft' onClick={ this.fetchAllExpense.bind(this) }>Show All</button>
+        { this.props.userInfo.isAdmin ? <button className='topLeft' onClick={ this.toggleAddAdminPanel.bind(this) }>{ this.props.addAdminDisplay ? 'Hide' : 'Add Admin' }</button> : <span></span> }
 			</div>
 		);
   }
@@ -42,12 +53,15 @@ class TopBanner extends Component {
 let mapStateToProps = (state) => {
   return {
     userInfo: state.userInfo,
+    addAdminDisplay: state.addAdminDisplay,
     createDisplay: state.createDisplay
   };
 };
 
 let mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
+    showAddAdminPanel: showAddAdminPanel,
+    hideAddAdminPanel: hideAddAdminPanel,
     showCreatePanel: showCreatePanel,
     hideCreatePanel: hideCreatePanel,
     fetchExpense: fetchExpense,
