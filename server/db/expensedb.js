@@ -1,5 +1,6 @@
-let mongoose = require('mongoose');
 let User = require('./userdb');
+let mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 let ExpenseSchema = new mongoose.Schema({
   datetime: {

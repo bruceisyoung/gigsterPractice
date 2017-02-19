@@ -4,7 +4,7 @@ import axios from 'axios';
 export function customedMiddleware(store) {
 	return next => action => {
 		if(action.type === 'SIGNUP') {
-			axios.post('/signup', {
+			axios.post('/api/signup', {
 				username: action.username,
 				password: action.password
 			})
@@ -19,7 +19,7 @@ export function customedMiddleware(store) {
 		}
 
 		if (action.type === 'LOGIN') {
-			axios.post('/login', {
+			axios.post('/api/login', {
 				username: action.username,
 				password: action.password
 			})

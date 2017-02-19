@@ -12,6 +12,7 @@ app.use(bodyParser.urlencoded({
 }));
 app.use(express.static(__dirname));
 
+mongoose.Promise = require('bluebird');
 mongoose.connect('mongodb://localhost/trial');
 let db = mongoose.connection;
 db.on('error', console.error);
@@ -29,3 +30,5 @@ let port = process.env.PORT || 8080;
 
 app.listen(port);
 console.log('server listening on ', port);
+
+module.exports = app;

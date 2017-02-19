@@ -9,13 +9,13 @@ module.exports = (app, express, rootPath) => {
     res.sendFile(path.resolve(rootPath, 'index.html'));
   });
 
-  app.get('/expense', (req, res) => {
+  app.get('/api/expense', (req, res) => {
   });
 
-  app.get('/allexpense', (req, res) => {
+  app.get('/api/allexpense', (req, res) => {
   });
 
-  app.post('/login', (req, res) => {
+  app.post('/api/login', (req, res) => {
     User.findOne({username: req.body.username}).exec((err, user) => {
       if(!user) {
         res.status(209).send('This username doesn\'t exist.');
@@ -34,7 +34,7 @@ module.exports = (app, express, rootPath) => {
     });
   });
 
-  app.post('/signup', (req, res) => {
+  app.post('/api/signup', (req, res) => {
     User.findOne({username: req.body.username}).exec((err, user) => {
       if (user) {
         res.status(211).send('This username already exist.');
@@ -60,15 +60,19 @@ module.exports = (app, express, rootPath) => {
     });
   });
 
-  app.post('/addadmin', (req, res) =>{
+  app.post('/api/logout', (req, res) => {
+    res.status(200).send('Successfully log out');
+  })
+
+  app.post('/api/addadmin', (req, res) =>{
   });
 
-  app.post('/saveexpense', (req, res) => {
+  app.post('/api/saveexpense', (req, res) => {
   });
 
-  app.post('/deleteexpense', (req, res) => {
+  app.post('/api/deleteexpense', (req, res) => {
   });
 
-  app.post('/updateexpense', (req, res) => {
+  app.post('/api/updateexpense', (req, res) => {
   });
 };

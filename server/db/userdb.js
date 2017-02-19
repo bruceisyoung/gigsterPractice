@@ -1,4 +1,5 @@
 let mongoose = require('mongoose');
+mongoose.Promise = require('bluebird');
 
 let UserSchema = new mongoose.Schema({
   username: {
@@ -17,6 +18,4 @@ let UserSchema = new mongoose.Schema({
   }
 });
 
-let User = mongoose.model('users', UserSchema);
-
-module.exports = User;
+module.exports = mongoose.model('users', UserSchema);
