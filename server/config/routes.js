@@ -16,6 +16,7 @@ module.exports = (app, express, rootPath) => {
   });
 
   app.get('/api/allexpense', (req, res) => {
+    Expense.find({}).exec((err, expenses) => helpers.sendbackQueryResults(err, expenses, res));
   });
 
   app.post('/api/login', (req, res) => {

@@ -92,6 +92,14 @@ export function customedMiddleware(store) {
 				.catch(error => console.log(error));
 		}
 
+		if (action.type === 'FETCHALLEXPENSE') {
+			axios.get('/api/allexpense')
+				.then(res => {
+					store.dispatch(actions.updateExpenseDatabase(res.data));
+				})
+				.catch(error => console.log(error));
+		}
+
 		if (action.type === 'SHOWERRORMESSAGE') {
 			setTimeout(() => {
 				store.dispatch(actions.checkOutdatedErrorMessage());

@@ -103,7 +103,7 @@ describe('Login & Signup API', () => {
 						done();
 					});
 			});
-	})
+	});
 });
 
 describe('Expense Rated API: create and fetch', () => {
@@ -188,6 +188,20 @@ describe('Expense Rated API: create and fetch', () => {
 				}
 			})
 		});
+	});
+
+	it('should return 200 statusCode and all the expense entries in the database when fetching all expenses', (done) => {
+		let entriesCount;
+		Expense.find({}).exec((err, entries) => {
+			entriesCount = entries.length;
+			request(app)
+				.get('/api/allexpense')
+				.end((err, res) => {
+					expect(res.statusCode).to.equal(200);
+					expect(res.body.length).to.equal(entriesCount);
+					done();
+				})
+		})
 	});
 });
 

@@ -95,6 +95,12 @@ export function fetchExpense(username) {
 	}
 }
 
+export function fetchAllExpense() {
+	return {
+		type: 'FETCHALLEXPENSE'
+	}
+}
+
 export function updateExpenseDatabase(expenses) {
 	return {
 		type: 'UPDATEEXPENSEDATABASE',
