@@ -103,7 +103,6 @@ module.exports = (app, express, rootPath) => {
       datetime: req.body.datetime
     }, err => {
       if (err) {
-        console.log(err);
         res.status(509).send('Internal Database Error');
       } else {
         res.status(200).send('successfully updated item');

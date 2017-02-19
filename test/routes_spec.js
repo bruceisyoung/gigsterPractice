@@ -59,7 +59,7 @@ describe('Login & Signup API', () => {
 			})
 	});
 
-	it('login with incorrect password should receive 210 statuscode and a waning message', (done) => {
+	it('login with incorrect password should receive 210 statusCode and a waning message', (done) => {
 		request(app)
 			.post('/api/login')
 			.send({
@@ -106,12 +106,12 @@ describe('Login & Signup API', () => {
 	})
 });
 
-describe('Expense Rated API', () => {
+describe('Expense Rated API: create and fetch', () => {
 	beforeEach((done) => {
 		Expense.remove({user: 'reese'}).exec();
 		Expense.remove({user: 'bruce'}).exec();
 		done();
-	})
+	});
 
 	const expenseEntry = {
 		datetime: Date.now(),
@@ -189,5 +189,143 @@ describe('Expense Rated API', () => {
 			})
 		});
 	});
+});
 
+describe('Expense Rated API: update and delete', () => {
+	let expenseID;
+	const expenseEntry = {
+		datetime: Date.now(),
+		amount: 75.00,
+		description: 'Z & Y Chinese Food',
+		user: 'reese'
+	};
+	const expenseEntry2 = {
+		datetime: Date.now(),
+		amount: 12.00,
+		description: 'dry clean'
+	}
+
+	beforeEach((done) => {
+		Expense.remove({user: 'reese'}).exec(() => {
+			let newExpense = new Expense(expenseEntry);
+
+			newExpense.save((err, expense) => {
+				if (!err) {
+					expenseID = expense._id;
+					done();
+				}
+			})
+		});
+	});
+
+	it('delet: should delete an extry when user provide the expense id', (done) => {
+		Expense.find({user: 'reese'}).exec((err, expense) => {
+			expect(expense.length).to.equal(1);
+			expect(expense[0].user).to.equal('reese');
+			request(app)
+				.post('/api/deleteexpense')
+				.send({username: 'reese', id: expenseID})
+				.end((err, res) => {
+					Expense.find({user: 'reese'}).exec((err, expense) => {
+						expect(expense.length).to.equal(0);
+						done();
+					})
+				});
+		})
+	});
+
+	it('delete: should return 200 statusCode if correct id is provided', (done) => {
+		Expense.find({user: 'reese'}).exec((err, expense) => {
+			expect(expense.length).to.equal(1);
+			expect(expense[0].user).to.equal('reese');
+			request(app)
+				.post('/api/deleteexpense')
+				.send({username: 'reese', id: expenseID})
+				.end((err, res) => {
+					expect(res.statusCode).to.equal(200);
+					expect(res.text).to.equal('successfully deleted item');
+					done();
+				});
+		})
+	});
+
+	it('delete: should return 509 statusCode and warning text if wrong id is provided', (done) => {
+		Expense.find({user: 'reese'}).exec((err, expense) => {
+			expect(expense.length).to.equal(1);
+			expect(expense[0].user).to.equal('reese');
+			request(app)
+				.post('/api/deleteexpense')
+				.send({username: 'reese', id: expenseID + '1'})
+				.end((err, res) => {
+					expect(res.statusCode).to.equal(509);
+					expect(res.text).to.equal('Internal Database Error');
+					done();
+				});
+		});
+	});
+
+	it('modify: should not add a new entry', (done) => {
+		Expense.find({user: 'reese'}).exec((err, expense) => {
+			expect(expense.length).to.equal(1);
+			expect(expense[0].user).to.equal('reese');
+			request(app)
+				.post('/api/updateexpense')
+				.send(Object.assign(expenseEntry2, {id: expenseID}))
+				.end((err, res) => {
+					Expense.find({user: 'reese'}).exec((err, expense) => {
+						expect(expense.length).to.equal(1);
+						expect(expense[0].user).to.equal('reese');
+						done();
+					});
+				});
+		});
+	});
+
+	it('modify: should modify the original entry and has the same id in database', (done) => {
+		Expense.find({user: 'reese'}).exec((err, expense) => {
+			expect(expense.length).to.equal(1);
+			expect(expense[0].user).to.equal('reese');
+			request(app)
+				.post('/api/updateexpense')
+				.send(Object.assign(expenseEntry2, {id: expenseID}))
+				.end((err, res) => {
+					Expense.find({user: 'reese'}).exec((err, expense) => {
+						expect(expense[0]._id).to.deep.equal(expenseID);
+						expect(expense[0].amount).to.equal(12.00);
+						expect(expense[0].description).to.equal('dry clean');
+						done();
+					});
+				});
+		});
+	});
+
+	it('modify: should return 200 statusCode if correct id is provided ', (done) => {
+		Expense.find({user: 'reese'}).exec((err, expense) => {
+			expect(expense.length).to.equal(1);
+			expect(expense[0].user).to.equal('reese');
+			request(app)
+				.post('/api/updateexpense')
+				.send(Object.assign(expenseEntry2, {id: expenseID}))
+				.end((err, res) => {
+					expect(res.statusCode).to.equal(200);
+					expect(res.text).to.equal('successfully updated item');
+					done();
+				});
+		});
+	});
+
+	it('modify: should return 509 statusCode and warning text if wrong id is provided', (done) => {
+		Expense.find({user: 'reese'}).exec((err, expense) => {
+			expect(expense.length).to.equal(1);
+			expect(expense[0].user).to.equal('reese');
+			request(app)
+				.post('/api/updateexpense')
+				.send(Object.assign(expenseEntry2, {id: expenseID + 'x'}))
+				.end((err, res) => {
+					expect(res.statusCode).to.equal(509);
+					expect(res.text).to.equal('Internal Database Error');
+					done();
+				});
+		});
+	});
 });
