@@ -54,6 +54,18 @@ export function authFail(text) {
 	}
 }
 
+export function showAddAdminPanel() {
+	return {
+		type: 'SHOWADDADMINPANEL'
+	}
+}
+
+export function hideAddAdminPanel() {
+	return {
+		type: 'HIDEADDADMINPANEL'
+	}
+}
+
 export function showCreatePanel() {
 	return {
 		type: 'SHOWCREATEPANEL'
@@ -63,6 +75,18 @@ export function showCreatePanel() {
 export function hideCreatePanel() {
 	return {
 		type: 'HIDECREATEPANEL'
+	}
+}
+
+export function hideCreateReportPanel() {
+	return {
+		type: 'HIDECREATEREPORTPANEL'
+	}
+}
+
+export function showCreateReportPanel() {
+	return {
+		type: 'SHOWCREATEREPORTPANEL'
 	}
 }
 
@@ -132,6 +156,13 @@ export function closeModal() {
 	}
 }
 
+export function updateReportData(data) {
+	return {
+		type: 'UPDATEREPORTDATA',
+		reportData: data
+	}
+}
+
 export function showErrorMessage(text) {
 	return {
 		type: 'SHOWERRORMESSAGE',
@@ -144,17 +175,5 @@ export function checkOutdatedErrorMessage() {
 	return {
 		type: 'CHECKOUTDATEDERRORMESSAGE',
 		time: Date.now()
-	}
-}
-
-export function showAddAdminPanel() {
-	return {
-		type: 'SHOWADDADMINPANEL'
-	}
-}
-
-export function hideAddAdminPanel() {
-	return {
-		type: 'HIDEADDADMINPANEL'
 	}
 }

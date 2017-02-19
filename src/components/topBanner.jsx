@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { logout, showAddAdminPanel, hideAddAdminPanel, showCreatePanel, hideCreatePanel, fetchExpense, fetchAllExpense, showErrorMessage } from '../actions';
+import { logout, showAddAdminPanel, hideAddAdminPanel, showCreatePanel, hideCreatePanel, showCreateReportPanel, hideCreateReportPanel, fetchExpense, fetchAllExpense, showErrorMessage } from '../actions';
 
 class TopBanner extends Component {
   toggleAddAdminPanel() {
@@ -10,6 +10,7 @@ class TopBanner extends Component {
       this.props.hideAddAdminPanel();
     } else {
       this.props.hideCreatePanel();
+      this.props.hideCreateReportPanel();
       this.props.showAddAdminPanel();
     }
   }
@@ -19,7 +20,19 @@ class TopBanner extends Component {
       this.props.hideCreatePanel();
     } else {
       this.props.hideAddAdminPanel();
+      this.props.hideCreateReportPanel();
       this.props.showCreatePanel();
+    }
+  }
+
+  toggleCreateReportPanel() {
+    if (this.props.createReportDisplay) {
+      this.props.hideCreateReportPanel();
+    } else {
+      this.fetchExpense();
+      this.props.hideAddAdminPanel();
+      this.props.hideCreatePanel();
+      this.props.showCreateReportPanel();      
     }
   }
 
@@ -44,6 +57,7 @@ class TopBanner extends Component {
         <button className='topLeft' onClick={ this.toggleCreatePanel.bind(this) }>{ this.props.createDisplay ? 'Hide' : 'Creat Expense' }</button>
         <button className='topLeft' onClick={ this.fetchExpense.bind(this) }>Show Expense</button>
         <button className='topLeft' onClick={ this.fetchAllExpense.bind(this) }>Show All</button>
+        { this.props.expenseDatabase.length !== 0 ? <button className='topLeft' onClick={ this.toggleCreateReportPanel.bind(this) }>{ this.props.createReportDisplay ? 'Hide' : 'Report' }</button> : <span></span>}
         { this.props.userInfo.isAdmin ? <button className='topLeft' onClick={ this.toggleAddAdminPanel.bind(this) }>{ this.props.addAdminDisplay ? 'Hide' : 'Add Admin' }</button> : <span></span> }
 			</div>
 		);
@@ -54,7 +68,9 @@ let mapStateToProps = (state) => {
   return {
     userInfo: state.userInfo,
     addAdminDisplay: state.addAdminDisplay,
-    createDisplay: state.createDisplay
+    createDisplay: state.createDisplay,
+    createReportDisplay: state.createReportDisplay,
+    expenseDatabase: state.expenseDatabase
   };
 };
 
@@ -64,6 +80,8 @@ let mapDispatchToProps = (dispatch) => {
     hideAddAdminPanel: hideAddAdminPanel,
     showCreatePanel: showCreatePanel,
     hideCreatePanel: hideCreatePanel,
+    showCreateReportPanel: showCreateReportPanel,
+    hideCreateReportPanel: hideCreateReportPanel,
     fetchExpense: fetchExpense,
     fetchAllExpense: fetchAllExpense,
     showErrorMessage: showErrorMessage,
