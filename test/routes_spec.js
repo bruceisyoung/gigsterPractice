@@ -107,24 +107,38 @@ describe('Login & Signup API', () => {
 });
 
 describe('Expense Rated API', () => {
-	before((done) => {
+	beforeEach((done) => {
 		Expense.remove({user: 'reese'}).exec();
+		Expense.remove({user: 'bruce'}).exec();
 		done();
 	})
 
-	const expenseEntry1 = {
+	const expenseEntry = {
 		datetime: Date.now(),
 		cost: 75.00,
 		description: 'Z & Y Chinese Food',
 		username: 'reese'
 	};
 
+	const expenseEntries = [
+		{ datetime: Date.now(), user: 'reese', amount: 75.00, description: 'Z & Y Chinese Food' }, 
+		{ datetime: Date.now(), user: 'reese', amount: 23.59, description: 'medcine' }, 
+		{ datetime: Date.now(), user: 'reese', amount: 21.78, description: 'pet food' }, 
+		{ datetime: Date.now(), user: 'reese', amount: 12.00, description: 'Chinese take-out' }, 
+		{ datetime: Date.now(), user: 'reese', amount: 73.00, description: 'monthly muni pass' }, 
+		{ datetime: Date.now(), user: 'bruce', amount: 16.50, description: 'ice cream' }, 
+		{ datetime: Date.now(), user: 'bruce', amount: 99.00, description: 'show ticket' }, 
+		{ datetime: Date.now(), user: 'bruce', amount: 12.00, description: 'bart ticket to the airport' }, 
+		{ datetime: Date.now(), user: 'bruce', amount: 59.99, description: 'monthly gym pass' }, 
+		{ datetime: Date.now(), user: 'bruce', amount: 73.00, description: 'monthly muni pass' }, 
+	];
+
 	it('user should be able to save an expense entry through saveexpense api', (done) => {
 		Expense.find(({user: 'reese'})).exec((err, expense) => {
 			expect(expense.length).to.equal(0);
 			request(app)
 				.post('/api/saveexpense')
-				.send(expenseEntry1)
+				.send(expenseEntry)
 				.end((err, res) => {
 					Expense.find({user: 'reese'}).exec((err, expense) => {
 						expect(expense.length).to.equal(1);
@@ -137,4 +151,43 @@ describe('Expense Rated API', () => {
 				});
 		});
 	});
+
+	it('should return all the expense entries owned by the logged user', (done) => {
+		expenseEntries.forEach((expenseEntry, index) => {
+			let newExpense = new Expense(expenseEntry);
+			newExpense.save((err, expense) => {
+				if (index === 9) {
+					request(app)
+						.get('/api/expense')
+						.query({ username: 'reese' })
+						.end((err, res) => {
+							expect(res.body.length).to.equal(5);
+							done();
+						});
+				}
+			})
+		});
+	});
+
+	it('should only return the expense entries owned by the logged user', (done) => {
+		expenseEntries.forEach((expenseEntry, index) => {
+			let newExpense = new Expense(expenseEntry);
+			newExpense.save((err, expense) => {
+				if (index === 9) {
+					request(app)
+						.get('/api/expense')
+						.query({ username: 'reese' })
+						.end((err, res) => {
+							res.body.forEach((expense, index) => {
+								expect(expense.user).to.equal('reese');
+								if (index === 4) {
+									done();
+								}
+							})
+						});
+				}
+			})
+		});
+	});
+
 });
