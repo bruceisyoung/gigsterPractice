@@ -68,3 +68,17 @@ export function saveExpense(username, datetime, cost, description) {
 		description: description
 	}
 }
+
+export function fetchExpense(username) {
+	return {
+		type: 'FETCHEXPENSE',
+		username: username
+	}
+}
+
+export function updateExpenseDatabase(expenses) {
+	return {
+		type: 'UPDATEEXPENSEDATABASE',
+		expenses: expenses
+	}
+}

@@ -3,6 +3,7 @@ let bcrypt = require('bcrypt');
 
 let User = require('../db/userdb');
 let Expense = require('../db/expensedb');
+let helpers = require('./helpers');
 
 module.exports = (app, express, rootPath) => {
   app.get('/', (req, res) => {
@@ -10,6 +11,8 @@ module.exports = (app, express, rootPath) => {
   });
 
   app.get('/api/expense', (req, res) => {
+    Expense.find({user: req.query.username})
+      .exec((err, expenses) => helpers.sendbackQueryResults(err, expenses, res));
   });
 
   app.get('/api/allexpense', (req, res) => {

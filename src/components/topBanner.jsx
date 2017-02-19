@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { logout, showAddAdminPanel, hideAddAdminPanel, showCreatePanel, hideCreatePanel, showCreateReportPanel, hideCreateReportPanel, fetchExpense, fetchAllExpense, showErrorMessage } from '../actions';
+import { logout, showCreatePanel, hideCreatePanel, fetchExpense } from '../actions';
 
 class TopBanner extends Component {
   toggleCreatePanel() {
@@ -13,6 +13,10 @@ class TopBanner extends Component {
     }
   }
 
+  fetchExpense() {
+    this.props.fetchExpense(this.props.userInfo.username);
+  }
+
   render() {
     return (
 			<div className='banner'>
@@ -20,6 +24,7 @@ class TopBanner extends Component {
         <button className='topRight textButton'>{ this.props.userInfo.isAdmin ? 'Admin' : 'Regular User' }</button>
         <button className='topRight textButton'>{ this.props.userInfo.username }</button>
         <button className='topLeft' onClick={ this.toggleCreatePanel.bind(this) }>{ this.props.createDisplay ? 'Hide' : 'Creat Expense' }</button>
+        <button className='topLeft' onClick={ this.fetchExpense.bind(this) }>Show Expense</button>
 			</div>
 		);
   }
@@ -36,6 +41,7 @@ let mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     showCreatePanel: showCreatePanel,
     hideCreatePanel: hideCreatePanel,
+    fetchExpense: fetchExpense,
     logout: logout
   }, dispatch);
 };

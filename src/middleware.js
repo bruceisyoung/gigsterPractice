@@ -41,6 +41,25 @@ export function customedMiddleware(store) {
 				description: action.description
 			})
 				.then(res => {
+					if (res.status === 200) {
+						store.dispatch(actions.fetchExpense(action.username));
+					}
+				})
+				.catch(error => console.log(error));
+		}
+
+		if (action.type === 'FETCHEXPENSE') {
+			axios.get('/api/expense', {
+				params: {
+					username: action.username
+				}
+			})
+				.then(res => {
+					let sortedData = res.data.sort((a, b) => {
+						return (new Date(a.datetime)) - (new Date(b.datetime)); 
+					});
+					store.dispatch(actions
+						.updateExpenseDatabase(sortedData));
 				})
 				.catch(error => console.log(error));
 		}

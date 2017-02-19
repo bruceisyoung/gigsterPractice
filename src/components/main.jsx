@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 
 import TopBanner from './topBanner';
 import CreatePanel from './createPanel';
+import ExpenseTable from './expenseTable';
 
 class Main extends Component {
   render() {
@@ -10,6 +11,7 @@ class Main extends Component {
       <div>
         <TopBanner />
         <div> { this.props.createDisplay ? <CreatePanel /> : <div></div> } </div>
+        <div> { this.props.expenseDatabase.length !== 0 ? <ExpenseTable /> : <div></div>} </div>
       </div>
   	);
   }
@@ -17,7 +19,8 @@ class Main extends Component {
 
 let mapStateToProps = (state) => {
 	return {
-		createDisplay: state.createDisplay
+		createDisplay: state.createDisplay,
+    expenseDatabase: state.expenseDatabase
 	};
 }
 
