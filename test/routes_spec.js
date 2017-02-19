@@ -6,17 +6,11 @@ var app = require('../server');
 var User = require('../server/db/userdb');
 var Expense = require('../server/db/expensedb');
 
-describe('Login and signup api calls', () => {
+describe('Login & Signup API', () => {
 	before((done) => {
-		request(app)
-			.post('/api/logout')
-			.end((err, res) => {
-				if (res.statusCode === 200) {
-					User.remove({username: 'bruce'}).exec();
-					User.remove({username: 'reese'}).exec();
-				}
-				done();
-			})
+		User.remove({username: 'bruce'}).exec();
+		User.remove({username: 'reese'}).exec();
+		done();
 	});
 
 	it('signup create a new user', (done) => {
@@ -110,4 +104,37 @@ describe('Login and signup api calls', () => {
 					});
 			});
 	})
+});
+
+describe('Expense Rated API', () => {
+	before((done) => {
+		Expense.remove({user: 'reese'}).exec();
+		done();
+	})
+
+	const expenseEntry1 = {
+		datetime: Date.now(),
+		cost: 75.00,
+		description: 'Z & Y Chinese Food',
+		username: 'reese'
+	};
+
+	it('user should be able to save an expense entry through saveexpense api', (done) => {
+		Expense.find(({user: 'reese'})).exec((err, expense) => {
+			expect(expense.length).to.equal(0);
+			request(app)
+				.post('/api/saveexpense')
+				.send(expenseEntry1)
+				.end((err, res) => {
+					Expense.find({user: 'reese'}).exec((err, expense) => {
+						expect(expense.length).to.equal(1);
+						expect(expense[0].datetime).to.be.an.instanceof(Date);
+						expect(expense[0].amount).to.equal(75.00);
+						expect(expense[0].description).to.equal('Z & Y Chinese Food');
+						expect(expense[0].user).to.equal('reese');
+						done();
+					});
+				});
+		});
+	});
 });
