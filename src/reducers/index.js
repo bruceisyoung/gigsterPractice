@@ -5,6 +5,8 @@ import showLoginReducer from './reducer_showLogin';
 import userInfoReducer from './reducer_userInfo';
 import createDisplayReducer from './reducer_createDisplay';
 import expenseDatabaseReducer from './reducer_expenseDatabase';
+import modalReducer from './reducer_modal';
+import errorMessageReducer from './reducer_errorMessage';
 
 const rootReducer = combineReducers({
 	isAuth: isAuthReducer,
@@ -13,6 +15,8 @@ const rootReducer = combineReducers({
 	userInfo: userInfoReducer,
 	createDisplay: createDisplayReducer,
 	expenseDatabase: expenseDatabaseReducer,
+	modal: modalReducer,
+	errorMessage: errorMessageReducer
 });
 
 export default rootReducer;

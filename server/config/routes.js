@@ -87,8 +87,27 @@ module.exports = (app, express, rootPath) => {
   });
 
   app.post('/api/deleteexpense', (req, res) => {
+    Expense.remove({_id: req.body.id}, err => {
+      if (err) {
+        res.status(509).send('Internal Database Error');
+      } else {
+        res.status(200).send('successfully deleted item');
+      }
+    });
   });
 
   app.post('/api/updateexpense', (req, res) => {
+    Expense.update({_id: req.body.id}, {
+      amount: req.body.amount,
+      description: req.body.description,
+      datetime: req.body.datetime
+    }, err => {
+      if (err) {
+        console.log(err);
+        res.status(509).send('Internal Database Error');
+      } else {
+        res.status(200).send('successfully updated item');
+      }
+    });
   });
 };

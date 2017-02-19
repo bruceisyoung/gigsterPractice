@@ -48,6 +48,34 @@ export function customedMiddleware(store) {
 				.catch(error => console.log(error));
 		}
 
+		if (action.type === 'DELETEEXPENSE') {
+			axios.post('/api/deleteexpense', {
+				username: action.username,
+				id: action.id
+			})
+				.then(res => {
+					if (res.status === 200) {
+						store.dispatch(actions.fetchExpense(action.username));
+					}
+				})
+				.catch(error => console.log(error));
+		}
+
+		if (action.type === 'UPDATEEXPENSE') {
+			axios.post('/api/updateexpense', {
+				datetime: action.datetime,
+				description: action.description,
+				amount: action.amount,
+				id: action.id
+			})
+				.then(res => {
+					if (res.status === 200) {
+						store.dispatch(actions.fetchExpense(action.username));
+					}
+				})
+				.catch(error => console.log(error));
+		}
+
 		if (action.type === 'FETCHEXPENSE') {
 			axios.get('/api/expense', {
 				params: {
@@ -62,6 +90,12 @@ export function customedMiddleware(store) {
 						.updateExpenseDatabase(sortedData));
 				})
 				.catch(error => console.log(error));
+		}
+
+		if (action.type === 'SHOWERRORMESSAGE') {
+			setTimeout(() => {
+				store.dispatch(actions.checkOutdatedErrorMessage());
+			}, 3000)
 		}
 
 		return next(action);
