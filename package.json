@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "mocha --compilers js:babel-core/register test/*.js",
+    "dev": "webpack",
     "start": "node server.js"
   },
   "repository": {
