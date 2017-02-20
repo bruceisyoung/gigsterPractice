@@ -3,10 +3,11 @@ const defaultState = {
 	datetime: undefined,
 	description: undefined,
 	amount: undefined,
-	user: undefined
+	user: undefined,
+	id: undefined
 }
 
-export default function(state = false, action) {
+export default function(state = defaultState, action) {
 	switch(action.type) {
 		case 'OPENMODAL': 
 		  return {

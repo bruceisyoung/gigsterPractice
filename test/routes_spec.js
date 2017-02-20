@@ -8,9 +8,11 @@ var Expense = require('../server/db/expensedb');
 
 describe('Login & Signup API', () => {
 	before((done) => {
-		User.remove({username: 'bruce'}).exec();
-		User.remove({username: 'reese'}).exec();
-		done();
+		User.remove({username: 'bruce'}).exec(() => {
+			User.remove({username: 'reese'}).exec(() => {
+				done();
+			});
+		});
 	});
 
 	it('signup create a new user', (done) => {
@@ -120,9 +122,11 @@ describe('add admin API', () => {
 	};
 
 	beforeEach((done) => {
-		User.remove({username: 'bruce'}).exec();
-		User.remove({username: 'reese'}).exec();
-		done();
+		User.remove({username: 'bruce'}).exec(() => {
+			User.remove({username: 'reese'}).exec(() => {
+				done();
+			});
+		});
 	});
 
 	it('call addadmin api will set a user\'s isAdmin indicator to be true', (done) => {
@@ -182,9 +186,11 @@ describe('add admin API', () => {
 
 describe('Expense Rated API: create and fetch', () => {
 	beforeEach((done) => {
-		Expense.remove({user: 'reese'}).exec();
-		Expense.remove({user: 'bruce'}).exec();
-		done();
+		Expense.remove({user: 'reese'}).exec(() => {
+			Expense.remove({user: 'bruce'}).exec(() => {
+				done();
+			});
+		});
 	});
 
 	const expenseEntry = {
